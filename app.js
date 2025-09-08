@@ -1,7 +1,6 @@
-
-
-window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
     addListenerToMoodMatrix();
+    addListenerToTTS();
 });
 
 const addListenerToMoodMatrix = () => {
@@ -27,4 +26,22 @@ const moodMatrixListener = async (event) => {
     } catch (e) {
         console.error(e);
     }
+};
+
+const addListenerToTTS = () => {
+    const ttsForm = document.getElementsByClassName('tts')?.[0];
+
+    if (!ttsForm) {
+        console.error('could not connect to tts form');
+        return;
+    }
+    
+    ttsForm.addEventListener('submit', ttsListener);
+};
+
+const ttsListener = async (event) => {
+    event.preventDefault();
+
+    const textarea = event.target.querySelector("textarea");
+    console.log("Submitted text:", textarea.value);
 };
