@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "description": "This is part of my esp-widget project, with the main repo found here https://github.com/e2000mann/esp-widget",
   "main": "script.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "esbuild": "^0.25.9"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "esbuild app.js --bundle --outfile=script.js"
   },
   "keywords": [],
   "author": "",
