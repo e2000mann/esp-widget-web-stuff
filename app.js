@@ -43,5 +43,14 @@ const ttsListener = async (event) => {
     event.preventDefault();
 
     const textarea = event.target.querySelector("textarea");
-    console.log("Submitted text:", textarea.value);
+
+    try {
+        await fetch('/tts', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: textarea.value }),
+        });
+    } catch (e) {
+        console.error(e);
+    }
 };
