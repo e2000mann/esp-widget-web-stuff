@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     addListenerToMoodMatrix();
     addListenerToTTS();
+    addListenersToSettings();
 });
 
 const addListenerToMoodMatrix = () => {
@@ -53,4 +54,51 @@ const ttsListener = async (event) => {
     } catch (e) {
         console.error(e);
     }
+};
+
+const addListenersToSettings = () => {
+    const settingsForm = document.getElementsByClassName('settings')?.[0];
+
+    if (!settingsForm) {
+        console.error('could not connect to settings form');
+        return;
+    }
+
+    settingsForm.addEventListener('submit', settingsListener);
+
+    const brightnessInput = document.querySelector('#brightness');
+    brightnessInput.addEventListener('input', (event) => {
+        linkInputToOutput(event, '#brightnessOut');
+    });
+
+    const volumeInput = document.querySelector('#volume');
+    volumeInput.addEventListener('input', (event) => {
+        linkInputToOutput(event, '#volumeOut');
+    });
+
+};
+
+const settingsListener = async (event) => {
+    event.preventDefault();
+
+    const brightness = event.target.querySelector('#brightness');
+    const volume = event.target.querySelector('#volume');
+
+    try {
+        await fetch('/settings', {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ brightness: brightness.value, volume: volume.value }),
+        });
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+const linkInputToOutput = async (event, outputId) => {
+    const input = event.target;
+
+    const output = document.querySelector(outputId);
+    
+    output.textContent = event.target.value;
 };
